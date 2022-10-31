@@ -1,0 +1,6 @@
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: aws-alb
+spec:
+  controller: ingress.k8s.aws/alb #Defines the controller name which implements this IngressClass. By default AWS Load Balancer Controller uses and checks this controller name. 

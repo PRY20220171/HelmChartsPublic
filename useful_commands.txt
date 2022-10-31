@@ -1,0 +1,29 @@
+!Para verificar que hemos instalado lo necesario
+helm version --short | cut -d + -f 1
+
+!usuario db:
+kubectl get secret k8ssandra-superuser -n database -o jsonpath="{.data.username}" | base64 --decode ; echo
+!pass db:
+kubectl get secret k8ssandra-superuser -n database -o jsonpath="{.data.password}" | base64 --decode ; echo
+
+!!Visualizacion de recursos creados
+!para ver espacios de almacenamiento:
+kubectl get storageclasses
+!Para ver los pods:
+kubectl get pods
+!Para ver los services:
+kubectl get services
+!!Una vez que todos los pods esten en running o complete, verificamos la salud del cluster:
+kubectl get cassandradatacenters
+kubectl describe CassandraDataCenter dc1 | grep "Cassandra Operator Progress:"
+!!PORT FORWARDING:
+kubectl port-forward --address 0.0.0.0,localhost svc/k8ssandra-dc1-stargate-service 8080 8081 8082 9042 &
+kubectl get services
+
+!para eliminar LBS:
+kubectl -n rabbitmq patch svc my-release-rabbitmq -p '{"spec": {"type": "ClusterIP"}}'
+kubectl -n database patch svc k8ssandra-dc1-stargate-service -p '{"spec": {"type": "ClusterIP"}}'
+!para crear LBS:
+kubectl -n rabbitmq patch svc my-release-rabbitmq -p '{"spec": {"type": "LoadBalancer"}}'
+kubectl -n database patch svc k8ssandra-dc1-stargate-service -p '{"spec": {"type": "LoadBalancer"}}'
+

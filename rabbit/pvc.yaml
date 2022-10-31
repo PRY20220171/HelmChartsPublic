@@ -1,0 +1,12 @@
+#02-persistent-volume-claim.yml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-claim
+spec: 
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ebs-sc
+  resources: 
+    requests:
+      storage: 4Gi

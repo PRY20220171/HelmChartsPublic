@@ -1,0 +1,13 @@
+{{- if .Values.hpa.enabled -}}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{.Values.imageResultados.name}}
+spec:
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  scaleTargetRef:
+    kind: Deployment
+    name: {{.Values.imageResultados.name}}
+  targetCPUUtilizationPercentage: {{ .Values.hpa.averageCpuUtilization }}
+{{- end }}

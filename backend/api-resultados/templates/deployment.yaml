@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{.Values.imageResultados.name}}
+  name: {{.Values.imageResultados.name}}
+spec:
+  replicas: {{.Values.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.imageResultados.name}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.imageResultados.name}}
+        role: {{.Values.imageResultados.name}}
+    spec:
+      containers:
+        - image: {{.Values.imageResultados.repository}}
+          imagePullPolicy: {{.Values.imageResultados.pullPolicy}}
+          name: {{ .Values.imageResultados.name }}
+          ports:
+            - containerPort: {{.Values.imageResultados.EXPOSE_PORT}}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: {{.Values.imageResultados.EXPOSE_PORT}}
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: {{.Values.imageResultados.EXPOSE_PORT}}
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          resources:
+            limits:
+              memory: 600Mi
+            requests:
+              cpu: 200m
+              memory: 600Mi
+          env:
+            - name: EXPOSE_PORT
+              value: {{.Values.imageResultados.EXPOSE_PORT | quote}}
+            {{- range $key, $val := .Values.envVars}}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
+      restartPolicy: Always
+status: {}

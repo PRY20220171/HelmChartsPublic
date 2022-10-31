@@ -1,0 +1,32 @@
+cassandra:
+  enabled: true
+  version: "3.11.11"
+  clusterName: "ekssalud"
+  auth:
+    enabled: false
+  cassandraLibDirVolume:
+    storageClass: "local-path"
+    size: "2Gi"
+  heap:
+    size: "1G"
+    newGenSize: "1G"
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+  datacenters:
+    - name: "dc1"
+      size: 1
+stargate:
+  enabled: true
+  replicas: 1
+  cpuReqMillicores: 1000
+  cpuLimMillicores: 1000
+  heapMB: 1024
+reaper:
+  enabled: false
+kube-prometheus-stack:
+  enabled: false

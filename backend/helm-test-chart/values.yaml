@@ -1,0 +1,56 @@
+# Default values for java-baja-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+imageAtencion:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-atencion:main
+  pullPolicy: Always
+  EXPOSE_PORT: 8082
+  name: atencionapi
+imageAutentificacion:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-autentificacion:main
+  pullPolicy: Always
+  EXPOSE_PORT: 8083
+  name: authapi
+imageDiagnosticos:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-diagnosticos:main
+  pullPolicy: Always
+  EXPOSE_PORT: 8084
+  name: diagnosticosapi
+imagePacientes:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-pacientes:main
+  pullPolicy: Always
+  EXPOSE_PORT: 8085
+  name: pacientesapi
+imagePruebas:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-pruebas:main
+  pullPolicy: Always
+  EXPOSE_PORT: 8086
+  name: pruebasapi
+imageResultados:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-resultados:main
+  pullPolicy: Always
+  EXPOSE_PORT: 8087
+  name: resultadosapi
+
+envVars:
+  CASSANDRA_DATACENTER: "dc1"
+  CASSANDRA_USERNAME: "k8ssandra-superuser"
+  CASSANDRA_PASSWORD: "gU4yA6JmgJfV7nHKSdoH"
+  CASSANDRA_HOST: "107.21.38.197"
+  CASSANDRA_PORT: "9042"
+  CASSANDRA_SSL: "false"
+  RABBITMQ_HOST: "44.199.1.104"
+  RABBITMQ_PORT: "5672"
+  ENVIRONMENT: "local"
+
+application:
+  name: backend-api
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  averageCpuUtilization: 90

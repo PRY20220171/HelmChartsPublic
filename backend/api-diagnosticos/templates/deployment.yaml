@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{.Values.imageDiagnosticos.name}}
+  name: {{.Values.imageDiagnosticos.name}}
+spec:
+  replicas: {{.Values.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.imageDiagnosticos.name}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 50%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{.Values.imageDiagnosticos.name}}
+        role: {{.Values.imageDiagnosticos.name}}
+    spec:
+      containers:
+        - image: {{.Values.imageDiagnosticos.repository}}
+          imagePullPolicy: {{.Values.imageDiagnosticos.pullPolicy}}
+          name: {{ .Values.imageDiagnosticos.name }}
+          ports:
+            - containerPort: {{.Values.imageDiagnosticos.EXPOSE_PORT}}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: {{.Values.imageDiagnosticos.EXPOSE_PORT}}
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: {{.Values.imageDiagnosticos.EXPOSE_PORT}}
+            initialDelaySeconds: 15
+            periodSeconds: 5
+          resources:
+            limits:
+              memory: 600Mi
+            requests:
+              cpu: 200m
+              memory: 600Mi
+          env:
+            - name: EXPOSE_PORT
+              value: {{.Values.imageDiagnosticos.EXPOSE_PORT | quote}}
+            {{- range $key, $val := .Values.envVars}}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+            {{- end }}
+      restartPolicy: Always
+status: {}
