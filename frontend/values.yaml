@@ -1,0 +1,23 @@
+# Default values for java-baja-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+imageWebApp:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/webappsalud:main
+  pullPolicy: Always
+  EXPOSE_PORT: 80
+  name: webappsalud
+
+envVars:
+  EXPOSE_PORT: "80"
+
+application:
+  name: webappsalud
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  averageCpuUtilization: 90

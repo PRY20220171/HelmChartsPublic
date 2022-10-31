@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.imageWebApp.name }}
+spec:
+  type: ClusterIP
+  ports:
+  - protocol: TCP
+    port: {{ .Values.imageWebApp.EXPOSE_PORT }}
+    targetPort: {{ .Values.imageWebApp.EXPOSE_PORT }}
+    name: {{ .Values.imageWebApp.name }}
+  selector:
+    role: {{ .Values.imageWebApp.name }}
+
