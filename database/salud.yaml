@@ -28,5 +28,9 @@ stargate:
   heapMB: 1024
 reaper:
   enabled: false
+monitoring:
+  prometheus:
+    provision_service_monitors: true
 kube-prometheus-stack:
-  enabled: false
+  enabled: true
+
