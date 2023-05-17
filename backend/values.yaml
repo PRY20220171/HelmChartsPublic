@@ -37,7 +37,7 @@ imageResultados:
 imageTransferencias:
   repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-transferencias:main
   pullPolicy: Always
-  EXPOSE_PORT: 8187
+  EXPOSE_PORT: 8188
   name: transferenciasapi
 
 envVars:
