@@ -1,12 +1,12 @@
 cassandra:
   enabled: true
   version: "3.11.11"
-  clusterName: "ekssalud"
+  clusterName: "eks-cluster"
   auth:
     enabled: false
   cassandraLibDirVolume:
-    storageClass: "local-path"
-    size: "2Gi"
+    storageClass: "ebs-sc"
+    size: "5Gi"
   heap:
     size: "1G"
     newGenSize: "1G"

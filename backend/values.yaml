@@ -34,6 +34,11 @@ imageResultados:
   pullPolicy: Always
   EXPOSE_PORT: 8187
   name: resultadosapi
+imageTransferencias:
+  repository: 965053786278.dkr.ecr.us-east-1.amazonaws.com/tp-transferencias:main
+  pullPolicy: Always
+  EXPOSE_PORT: 8187
+  name: transferenciasapi
 
 envVars:
   CASSANDRA_DATACENTER: "dc1"

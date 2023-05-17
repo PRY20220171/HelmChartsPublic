@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{.Values.imageResultados.name}}
-  name: {{.Values.imageResultados.name}}
+    app: {{.Values.imageWebApp.name}}
+  name: {{.Values.imageWebApp.name}}
 spec:
   replicas: {{.Values.replicaCount}}
   selector:
     matchLabels:
-      app: {{.Values.imageResultados.name}}
+      app: {{.Values.imageWebApp.name}}
   strategy:
     rollingUpdate:
       maxSurge: 50%
@@ -17,28 +17,28 @@ spec:
   template:
     metadata:
       labels:
-        app: {{.Values.imageResultados.name}}
-        role: {{.Values.imageResultados.name}}
+        app: {{.Values.imageWebApp.name}}
+        role: {{.Values.imageWebApp.name}}
     spec:
       containers:
-        - image: {{.Values.imageResultados.repository}}
-          imagePullPolicy: {{.Values.imageResultados.pullPolicy}}
-          name: {{ .Values.imageResultados.name }}
+        - image: {{.Values.imageWebApp.repository}}
+          imagePullPolicy: {{.Values.imageWebApp.pullPolicy}}
+          name: {{ .Values.imageWebApp.name }}
           ports:
-            - containerPort: {{.Values.imageResultados.EXPOSE_PORT}}
+            - containerPort: {{.Values.imageWebApp.EXPOSE_PORT}}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /actuator/health/liveness
-              port: {{.Values.imageResultados.EXPOSE_PORT}}
-            initialDelaySeconds: 15
-            periodSeconds: 5
-          readinessProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: {{.Values.imageResultados.EXPOSE_PORT}}
-            initialDelaySeconds: 15
-            periodSeconds: 5
+          # livenessProbe:
+          #   httpGet:
+          #     path: /actuator/health/liveness
+          #     port: {{.Values.imageWebApp.EXPOSE_PORT}}
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 5
+          # readinessProbe:
+          #   httpGet:
+          #     path: /actuator/health/readiness
+          #     port: {{.Values.imageWebApp.EXPOSE_PORT}}
+          #   initialDelaySeconds: 15
+          #   periodSeconds: 5
           resources:
             limits:
               memory: 600Mi
@@ -47,7 +47,7 @@ spec:
               memory: 600Mi
           env:
             - name: EXPOSE_PORT
-              value: {{.Values.imageResultados.EXPOSE_PORT | quote}}
+              value: {{.Values.imageWebApp.EXPOSE_PORT | quote}}
             {{- range $key, $val := .Values.envVars}}
             - name: {{ $key }}
               value: {{ $val | quote }}
